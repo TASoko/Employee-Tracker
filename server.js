@@ -2,6 +2,7 @@
 require('dotenv').config()
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+const cTable = require('console.table');
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -13,8 +14,8 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "",
-  database: "top_songsDB"
+  password: process.env.PASSWORD,
+  database: "employee_db"
 });
 
 connection.connect(function(err) {
