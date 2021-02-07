@@ -12,7 +12,7 @@ name varChar (30) not null
 CREATE TABLE roles (
 id  INT AUTO_INCREMENT PRIMARY KEY, 
 title varChar (30) not null,
-salary DECIMAL (10, 4) not null,
+salary DECIMAL (10, 2) not null,
 department_id INT not null 
 );
 

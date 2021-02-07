@@ -108,3 +108,41 @@ function add () {
        }
       )});
     }
+
+  function addRoles () {
+    inquirer
+    .prompt([
+      {
+        name: "title",
+        type: "input",
+        message: "What is the title of the role?"
+      },
+      {
+        name: "salary",
+        type: "number",
+        message: "What is the person's salary?"
+      },
+      {
+        name: "department_id",
+        type: "number",
+        message: "What is the department id?",
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO roles SET ?",
+        {
+          title: answer.title,
+          salary: answer.salary,
+          department_id: answer.department_id, 
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("the role was created!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
+  }
