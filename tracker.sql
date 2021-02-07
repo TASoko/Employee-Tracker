@@ -24,20 +24,21 @@ role_id INT not null,
 manager_id INT null
 );
 
-INSERT INTO department (id, name) VALUES ("Legal");
-INSERT INTO department (id, name) VALUES ("Human Resources");
-INSERT INTO department (id, name) VALUES ("Accounting");
+INSERT INTO department (id, name) VALUES (1, "Legal");
+INSERT INTO department (id, name) VALUES (2, "Human Resources");
+INSERT INTO department (id, name) VALUES (3, "Accounting");
 
 SELECT * FROM department;
 
-INSERT INTO roles (id, title, salary, department_id) VALUES ("Partner", 95000, 1);
-INSERT INTO roles (id, title, salary, department_id) VALUES ("Head of HR", 90000, 2);
-INSERT INTO roles (id, title, salary, department_id) VALUES ("Manager",95000, 3);
+INSERT INTO roles (id, title, salary, department_id) VALUES (1, "Partner", 95000, 1);
+INSERT INTO roles (id, title, salary, department_id) VALUES (2, "Head of HR", 90000, 2);
+INSERT INTO roles (id, title, salary, department_id) VALUES (3, "Manager",95000, 3);
 
 SELECT * FROM roles;
 
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES ("John", "Doe", 1, 1);
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES ("Peter", "Rabbit", 2, 2);
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES ("Jane", "Austen", 3, 3);
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (1, "John", "Doe", 1, 1);
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (2, "Peter", "Rabbit", 2, 2);
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (3, "Jane", "Austen", 3, 3);
+INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (4, "Marcus", "Rojo", 4, 4);
 
 SELECT * FROM employee;
