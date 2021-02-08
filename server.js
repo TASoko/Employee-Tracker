@@ -191,3 +191,61 @@ function add () {
     });
 
   }
+
+  function view () {
+    inquirer
+      .prompt({
+        name: "view",
+        type: "list",
+        message: "What would you like to view?",
+        choices: [
+          "Department",
+          "Roles",
+          "Employees",
+          "Exit"
+        ]
+      })
+      .then(function(answer) {
+        switch (answer.view) {
+        case "Department":
+          viewDepartment();
+          break;
+  
+        case "Roles":
+          viewRoles();
+          break;
+  
+        case "Employees":
+          viewEmployee();
+          break;
+  
+        case "Exit":
+          connection.end();
+          break;
+        }
+      });
+  }
+
+  function viewDepartment () {
+    connection.query("SELECT * FROM department", function(err, results) {
+      if (err) throw err;
+      console.log("It's working!");
+      start ();
+
+    });
+  }
+    // inquirer
+    //   .prompt({
+    //     name: "department",
+    //     type: "input",
+    //     message: "Add a department?",
+    //    })
+    //   .then(function(answer) {
+    //  connection.query("SELECT * department",
+    //    function(err) {
+    //     if (err) throw err;
+    //      console.log(answer.department);
+    //   start ();
+    //    }
+    //   )});
+    // }
