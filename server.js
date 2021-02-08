@@ -234,6 +234,16 @@ function add () {
 
     });
   }
+
+  function viewRoles () {
+    connection.query("SELECT * FROM roles", function(err, results) {
+      if (err) throw err;
+      console.log("It's working!");
+      start ();
+
+    });
+  }
+
     // inquirer
     //   .prompt({
     //     name: "department",
