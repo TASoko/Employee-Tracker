@@ -134,12 +134,9 @@ function addRoles() {
           console.log("the role was created!");
           var value = [
             [answer.title, answer.salary, answer.department_id],
-            // ["Salary",answer.salary],
-            // ["Department", answer.department_id]
-          ]
+          ];
           console.table(["Title", "Salary", "Department ID"], value);
           // re-prompt the user for if they want to bid or post
-
           start();
         }
       );
@@ -228,11 +225,25 @@ function viewDepartment() {
 }
 
 function viewRoles() {
-  connection.query("SELECT * FROM roles", function (err, results) {
+  // connection.connect (function(err) {
+  //   if (err) throw err;
+  connection.query("SELECT * FROM roles", function (err, results, fields) {
     if (err) throw err;
-    console.log("It's working!");
+    var chosenItem;
+    for (var i = 0; i < results.length; i++) {
+      // console.log(results);
+      chosenItem = results[i];
+      // console.log(chosenItem);
+      var value = [
+        [chosenItem.id, chosenItem.title, chosenItem.salary, chosenItem.department_id],
+      ];
+
+    }
+    console.table(["ID", "Title", "Salary", "Department ID"], value )
+    // console.log(results);
     start();
   });
+  // })
 }
 
 function viewEmployee() {
