@@ -146,3 +146,48 @@ function add () {
       );
     });
   }
+
+  function addEmployee () {
+    inquirer
+    .prompt([
+      {
+        name: "first",
+        type: "input",
+        message: "What is the employee's first name?"
+      },
+      {
+        name: "last",
+        type: "input",
+        message: "What is the employee's last name?"
+      },
+      {
+        name: "role_id",
+        type: "number",
+        message: "What is the role id?",
+      },
+      {
+        name: "manager_id",
+        type: "number",
+        message: "What is the manager id?"
+      }
+    ])
+    .then(function(answer) {
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: answer.first,
+          last_name: answer.last,
+          role_id: answer.role_id,
+          manager_id: answer.manager_id, 
+        },
+        function(err) {
+          if (err) throw err;
+          console.log("the employee was created!");
+          // re-prompt the user for if they want to bid or post
+          start();
+        }
+      );
+    });
+
+  }
