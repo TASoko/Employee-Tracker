@@ -244,6 +244,15 @@ function add () {
     });
   }
 
+  function viewEmployee () {
+    connection.query("SELECT * FROM employee", function(err, results) {
+      if (err) throw err;
+      console.log("It's working!");
+      start ();
+
+    });
+  }
+
     // inquirer
     //   .prompt({
     //     name: "department",
