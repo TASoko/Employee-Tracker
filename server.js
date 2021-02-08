@@ -291,7 +291,7 @@ function add () {
     connection.query("SELECT * FROM employee", function(err, results) {
       if (err) throw err;
       console.log("At least it started")
-      // once you have the items, prompt the user for which they'd like to bid on
+      // once you have the items, prompt the user for which they'd like to update
       inquirer
         .prompt([
           {
@@ -300,7 +300,7 @@ function add () {
             choices: function() {
               var choiceArray = [];
               for (var i = 0; i < results.length; i++) {
-                choiceArray.push(results[i].item_name);
+                choiceArray.push(results[i].role_id);
               }
               return choiceArray;
             },
