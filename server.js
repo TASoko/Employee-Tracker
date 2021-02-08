@@ -267,7 +267,7 @@ function add () {
         ]
       })
       .then(function(answer) {
-        switch (answer.view) {
+        switch (answer.update) {
         case "Department":
           updataeDepartment();
           break;
@@ -290,12 +290,13 @@ function add () {
     // query the database for all items being auctioned
     connection.query("SELECT * FROM employee", function(err, results) {
       if (err) throw err;
+      console.log("At least it started")
       // once you have the items, prompt the user for which they'd like to bid on
       inquirer
         .prompt([
           {
             name: "choice",
-            type: "rawlist",
+            type: "list",
             choices: function() {
               var choiceArray = [];
               for (var i = 0; i < results.length; i++) {
@@ -305,47 +306,43 @@ function add () {
             },
             message: "Which employee would you like to update?"
           },
-          {
-            name: "employee",
-            type: "list",
-            message: "?"
-          }
         ])
         .then(function(answer) {
           // get the information of the chosen item
           var chosenRole;
           for (var i = 0; i < results.length; i++) {
-            if (results[i].item_name === answer.choice) {
+            if (results[i].role_id === answer.choice) {
               chosenRole = results[i];
+              console.log(answer.choice)
             }
           }
   
           // determine if bid was high enough
-          if (chosenItem.highest_bid < parseInt(answer.bid)) {
-            // bid was high enough, so update db, let the user know, and start over
-            connection.query(
-              "UPDATE auctions SET ? WHERE ?",
-              [
-                {
-                  highest_bid: answer.bid
-                },
-                {
-                  id: chosenItem.id
-                }
-              ],
-              function(error) {
-                if (error) throw err;
-                console.log("Bid placed successfully!");
-                start();
-              }
-            );
-          }
-          else {
-            // bid wasn't high enough, so apologize and start over
-            console.log("Your bid was too low. Try again...");
+          // if (chosenItem.highest_bid < parseInt(answer.bid)) {
+          //   // bid was high enough, so update db, let the user know, and start over
+          //   connection.query(
+          //     "UPDATE auctions SET ? WHERE ?",
+          //     [
+          //       {
+          //         highest_bid: answer.bid
+          //       },
+          //       {
+          //         id: chosenItem.id
+          //       }
+          //     ],
+          //     function(error) {
+          //       if (error) throw err;
+          //       console.log("Bid placed successfully!");
+          //       start();
+          //     }
+          //   );
+          // }
+          // else {
+          //   // bid wasn't high enough, so apologize and start over
+          //   console.log("Your bid was too low. Try again...");
             start();
           }
-        });
+        );
     });
   }
   
