@@ -31,11 +31,11 @@ INSERT INTO department (name) VALUES ("Accounting");
 
 SELECT * FROM department;
 
-INSERT INTO roles (title, salary, department_id) VALUES ("Partner", 95000);
-INSERT INTO roles (title, salary, department_id) VALUES ("Head of HR", 90000);
-INSERT INTO roles (title, salary, department_id) VALUES ("Manager",95000);
+INSERT INTO roles (title, salary, department_id) VALUES ("Partner", 95000, 1);
+INSERT INTO roles (title, salary, department_id) VALUES ("Head of HR", 90000, 2);
+INSERT INTO roles (title, salary, department_id) VALUES ("Manager",95000, 3);
 
-SELECT * FROM roles LEFT JOIN department ON (roles.department_id = deparment.id);
+SELECT roles.id, title, salary, department.name AS department  FROM roles LEFT JOIN department ON roles.department_id = department.id;
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("John", "Doe", 1, 1);
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Peter", "Rabbit", 2, 2);
