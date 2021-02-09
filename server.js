@@ -3,6 +3,7 @@ require("dotenv").config(); //This is for the .env file that will hide my passwo
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 const cTable = require("console.table");
+var figlet = require('figlet');
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -20,6 +21,13 @@ var connection = mysql.createConnection({
 
 connection.connect(function (err) {
   if (err) throw err;
+  figlet('Employee Tracker', function(err, data) {
+    if (err) {
+        console.log('Something went wrong...');
+        console.dir(err);
+        return;
+    }
+});
   start();
 });
 
@@ -314,18 +322,41 @@ function updateEmployee() {
         }
         
       ])
-      // .then(function (answer) {
-      //   // get the information of the chosen item
-      //   var chosenRole = [];
-      //   for (var i = 0; i < results.length; i++) {
-      //     if (answer.updatedRole !== answer.choice) {
-            
+      .then(function (answer) {
+        // get the information of the chosen item
+        var chosenRole = [];
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].fullName === answer.choice) {
+            chosenRole = results[i];
+          }
+        }
+          if (answer.updatedRole.roles !== answer.choice.roles) {
+            connection.query(
+              "UPDATE employee SET ? WHERE ?",
+              [
+                {
+                  roles: answer.updatedRole.roles
+                },
+                {
+                  id: answer.choice.id
+                }
+              ],
+              function(error) {
+                if (error) throw err;
+                console.log("Role changed successfully!");
+                start();
+              }
+            );
+          }
+          else {
+            // bid wasn't high enough, so apologize and start over
+            console.log("Try again...");
+  
 
-
-      //       console.table(results)
-      //     }
-      //   }
-      //   start();
-      // });
+            // console.table(results)
+          
+        }
+        start();
+      });
   });
 }
