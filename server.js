@@ -225,34 +225,35 @@ function viewDepartment() {
 }
 
 function viewRoles() {
-  // connection.connect (function(err) {
-  //   if (err) throw err;
   connection.query("SELECT * FROM roles", function (err, results, fields) {
     if (err) throw err;
     var chosenItem =[];
     for (var i = 0; i < results.length; i++) {
       console.log(results);
       chosenItem = results[i];
-      // console.log(chosenItem);
-      // chosenItem.forEach(function (id, title, salary, department_id) {
-      //   console.log(id, title, salary, department_id);
-  //  })
       var value = [
         [chosenItem.id, chosenItem.title, chosenItem.salary, chosenItem.department_id],
       ];
 
     }
     console.table(["ID", "Title", "Salary", "Department ID"], value )
-    // console.log(results);
-    start();
-  });
-  // })
-}
+  })
+} 
 
 function viewEmployee() {
   connection.query("SELECT * FROM employee", function (err, results) {
     if (err) throw err;
-    console.log("It's working!");
+    var chosenItem =[];
+    for (var i = 0; i < results.length; i++) {
+      console.log(results);
+      chosenItem = results[i];
+      var value = [
+        [chosenItem.id, chosenItem.first_name, chosenItem.last_name, chosenItem.role_id, chosenItem.manager_id],
+      ];
+
+    }
+    console.table(["ID", "First Name", "Last Name", "Role ID", "Manager ID"], value )
+
     start();
   });
 }
@@ -313,6 +314,10 @@ function updateEmployee() {
           if (results[i].role_id === answer.choice) {
             chosenRole = results[i];
             console.log(answer.choice);
+            var value = [
+              [chosenRole.id, chosenRole.first_name, chosenRole.last_name, chosenRole.role_id], chosenRole.manager_id,
+            ];
+            console.table(["ID", "Firt Name", "Last Name", "Role ID", "Manager ID"], value )
           }
         }
         start();
@@ -345,12 +350,17 @@ function updateRoles() {
         // get the information of the chosen item
         var chosenRole = [];
         for (var i = 0; i < results.length; i++) {
-          if (results[i].role_id === answer.choice) {
+          if (results[i].title === answer.choice) {
             chosenRole = results[i];
             console.log(answer.choice);
+            var value = [
+              [chosenRole.id, chosenRole.title, chosenRole.salary, chosenRole.department_id],
+            ];
+            console.table(["ID", "Title", "Salary", "Department ID"], value )
           }
         }
+      })
+      
         start();
-      });
   });
 }

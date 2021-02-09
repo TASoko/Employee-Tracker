@@ -18,7 +18,7 @@ department_id INT not null
 );
 
 CREATE TABLE employee (
-id INT PRIMARY KEY,
+id INT AUTO_INCREMENT PRIMARY KEY,
 first_name varChar (30) not null,
 last_name varChar (30) not null,
 role_id INT not null,
@@ -31,9 +31,9 @@ INSERT INTO department (name) VALUES ("Accounting");
 
 SELECT * FROM department;
 
-INSERT INTO roles (title, salary, department_id) VALUES ("Partner", 95000, 1);
-INSERT INTO roles (title, salary, department_id) VALUES ("Head of HR", 90000, 2);
-INSERT INTO roles (title, salary, department_id) VALUES ("Manager",95000, 3);
+INSERT INTO roles (title, salary, department_id) VALUES ("Partner", 95000);
+INSERT INTO roles (title, salary, department_id) VALUES ("Head of HR", 90000);
+INSERT INTO roles (title, salary, department_id) VALUES ("Manager",95000);
 
 SELECT * FROM roles LEFT JOIN department ON (roles.department_id = deparment.id);
 
@@ -42,4 +42,5 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Peter
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Jane", "Austen", 3, 3);
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Marcus", "Rojo", 4, 4);
 
-SELECT * FROM employee LEFT JOIN roles ON (employee.role_id = roles.id);
+-- SELECT * FROM employee LEFT JOIN roles ON (employee.role_id = roles.id);
+SELECT * FROM employee
