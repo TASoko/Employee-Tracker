@@ -233,12 +233,12 @@ function viewRoles() {
 } 
 
 function viewEmployee() {
-  var query = "SELECT e.id, CONCAT(e.first_name, " ", e.last_name)";
-  query += "AS employee, roles.title, department.name";
-  query += "AS department, salary, CONCAT(m.first_name, " ", m.last_name)";
-  query += "AS manager FROM employee e INNER JOIN roles ON e.role_id=roles.id";
-  query += "INNER JOIN department on roles.department_id=department.id";
-  query += "LEFT JOIN employee m ON m.id = e.manager_id;";
+  // var query = "SELECT e.id, CONCAT(e.first_name, " ", e.last_name)";
+  // query += "AS employee, roles.title, department.name";
+  // query += "AS department, salary, CONCAT(m.first_name, " ", m.last_name)";
+  // query += "AS manager FROM employee e INNER JOIN roles ON e.role_id=roles.id";
+  // query += "INNER JOIN department on roles.department_id=department.id";
+  // query += "LEFT JOIN employee m ON m.id = e.manager_id;";
 
   connection.query(query, function (err, results) {
     if (err) throw err;
@@ -279,7 +279,7 @@ function update() {
 
 function updateEmployee() {
   // query the database for all items being auctioned
-  connection.query("SELECT * FROM employee", function (err, results) {
+  connection.query("SELECT employee.id, first_name, last_name, roles.title AS roles  FROM employee LEFT JOIN roles ON employee.role_id = roles.id", function (err, results) {
     if (err) throw err;
     console.log("At least it started");
     // once you have the items, prompt the user for which they'd like to update
@@ -298,22 +298,34 @@ function updateEmployee() {
             return choiceArray;
           },
           message: "Which employee would you like to update?",
+        },
+        {
+          name: 'updatedRole',
+          type: 'list',
+          choices: function () {
+            var roleArray = [];
+            for (var i = 0; i < results.length; i++) {
+              console.log(results[i].roles)
+              roleArray.push(results[i].roles);
+            }
+            return roleArray;
+          },
+          message: 'What role would you like to give them?',
         }
+        
       ])
-      .then(function (answer) {
-        // get the information of the chosen item
-        var chosenRole = [];
-        for (var i = 0; i < results.length; i++) {
-          if (results[i].role_id === answer.choice) {
-            chosenRole = results[i];
-            console.log(answer.choice);
-            var value = [
-              [chosenRole.id, chosenRole.first_name, chosenRole.last_name, chosenRole.role_id], chosenRole.manager_id,
-            ];
-            console.table(results)
-          }
-        }
-        start();
-      });
+      // .then(function (answer) {
+      //   // get the information of the chosen item
+      //   var chosenRole = [];
+      //   for (var i = 0; i < results.length; i++) {
+      //     if (answer.updatedRole !== answer.choice) {
+            
+
+
+      //       console.table(results)
+      //     }
+      //   }
+      //   start();
+      // });
   });
 }
