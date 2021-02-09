@@ -219,7 +219,16 @@ function view() {
 function viewDepartment() {
   connection.query("SELECT * FROM department", function (err, results) {
     if (err) throw err;
-    console.log("It's working!");
+    var chosenItem =[];
+    for (var i = 0; i < results.length; i++) {
+      console.log(results);
+      chosenItem = results[i];
+      var value = [
+        [chosenItem.id, chosenItem.name],
+      ];
+
+    }
+    console.table(["ID", "Name"], value )
     start();
   });
 }
