@@ -241,14 +241,14 @@ function viewRoles() {
 } 
 
 function viewEmployee() {
-  // var query = "SELECT e.id, CONCAT(e.first_name, " ", e.last_name)";
-  // query += "AS employee, roles.title, department.name";
-  // query += "AS department, salary, CONCAT(m.first_name, " ", m.last_name)";
-  // query += "AS manager FROM employee e INNER JOIN roles ON e.role_id=roles.id";
-  // query += "INNER JOIN department on roles.department_id=department.id";
-  // query += "LEFT JOIN employee m ON m.id = e.manager_id;";
-
-  connection.query(query, function (err, results) {
+  connection.query(`SELECT e.id, CONCAT(e.first_name, " ", e.last_name) 
+  AS employee, roles.title, department.name 
+  AS department, salary, CONCAT(m.first_name, " ", m.last_name) 
+  AS manager 
+  FROM employee e INNER JOIN roles ON e.role_id=roles.id 
+  INNER JOIN department on roles.department_id=department.id 
+  LEFT JOIN employee m ON m.id = e.manager_id; 
+  `, function (err, results) {
     if (err) throw err;
     console.table(results)
 
@@ -324,23 +324,24 @@ function updateEmployee() {
       ])
       .then(function (answer) {
         // get the information of the chosen item
+
         var chosenRole = [];
         for (var i = 0; i < results.length; i++) {
-          if (results[i].fullName === answer.choice) {
-            chosenRole = results[i];
+          if (`results[i].first_name results[i].last_name` === answer.choice) {
+            // chosenRole = results[i];
+            console.log("they match")
+          } else {
+            console.log("they don't match")
           }
         }
-          if (answer.updatedRole.roles !== answer.choice.roles) {
+        console.log(results)
+        console.log(answer.updatedRole)
+        console.log(answer.choice)
+        console.log(answer)
+          if (answer.updatedRole !== answer.choice ) {
             connection.query(
-              "UPDATE employee SET ? WHERE ?",
-              [
-                {
-                  roles: answer.updatedRole.roles
-                },
-                {
-                  id: answer.choice.id
-                }
-              ],
+              "UPDATE employee SET role = ? WHERE id = ?",
+              [answer.updatedRole, answer.choice.id],
               function(error) {
                 if (error) throw err;
                 console.log("Role changed successfully!");
