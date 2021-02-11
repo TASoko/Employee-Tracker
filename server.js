@@ -64,7 +64,7 @@ function start() {
       }
     });
 }
-
+// The add function prompts the user to follow through with adding information to 3 choices or ending the program.
 function add() {
   inquirer
     .prompt({
@@ -73,6 +73,7 @@ function add() {
       message: "What would you like to add to?",
       choices: ["Department", "Roles", "Employees", "Exit"],
     })
+    // just like in the start function a switch statement is used to lead the user to a new function depending on their choice
     .then(function (answer) {
       switch (answer.add) {
         case "Department":
@@ -94,6 +95,7 @@ function add() {
     });
 }
 
+//below is the function for adding a department
 function addDepartment() {
   inquirer
     .prompt({
@@ -102,19 +104,24 @@ function addDepartment() {
       message: "Add a department?",
     })
     .then(function (answer) {
+      // to add a department we must first call on the department table then tell the function where to add information according to our table set up
       connection.query(
+      // This statement is saying that insert into the table department where the informaiton required is name the value of answer.department which is what was created by the user
         "INSERT INTO department (name) VALUES (?)",
         answer.department,
         function (err) {
           if (err) throw err;
           console.log(answer.department);
+          console.table(answer);
           start();
         }
       );
     });
 }
 
+//below is the function for adding a role
 function addRoles() {
+  //for the roles table, there are 3 fields that must be addressed, title, salary and number. The user must input all three of these.
   inquirer
     .prompt([
       {
@@ -134,7 +141,7 @@ function addRoles() {
       },
     ])
     .then(function (answer) {
-      // when finished prompting, insert a new item into the db with that info
+      // when finished prompting, the function inserts a new item into the db with that info
       connection.query(
         "INSERT INTO roles SET ?",
         {
@@ -145,18 +152,18 @@ function addRoles() {
         function (err) {
           if (err) throw err;
           console.log("the role was created!");
-          var value = [
-            [answer.title, answer.salary, answer.department_id],
-          ];
-          console.table(["Title", "Salary", "Department ID"], value);
-          // re-prompt the user for if they want to bid or post
+          console.table(answer);
+
           start();
         }
       );
     });
 }
 
+//below is the function for adding an employee
 function addEmployee() {
+    //for the employee table, there are 4 fields that must be addressed the employee's first and last name, the role id and the manager id. The user must input all four of these.
+
   inquirer
     .prompt([
       {
@@ -193,7 +200,7 @@ function addEmployee() {
         function (err) {
           if (err) throw err;
           console.log("the employee was created!");
-          // re-prompt the user for if they want to bid or post
+          console.table(answer)
           start();
         }
       );
