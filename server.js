@@ -27,8 +27,8 @@ connection.connect(function (err) {
         console.dir(err);
         return;
     }
+    viewEmployee();
 });
-  start();
 });
 
 function start() {
@@ -325,39 +325,78 @@ function updateEmployee() {
       .then(function (answer) {
         // get the information of the chosen item
 
-        var chosenRole = [];
+        // var chosenRole = [];
         for (var i = 0; i < results.length; i++) {
-          if (`results[i].first_name results[i].last_name` === answer.choice) {
-            // chosenRole = results[i];
-            console.log("they match")
+          // chosenRole.push(results[i].roles);
+          // console.log(chosenRole);
+          console.log("this is working")
+          roleBefore = results[i].roles
+          console.log(roleBefore);
+
+          let fullName = results[i].first_name + " " + results[i].last_name; 
+          console.log(fullName)
+          let employee_ID = results[i].id
+          console.log(employee_ID)
+        // }
+
+          if (fullName === answer.choice) {
+
+            console.log(fullName)
+            console.log(employee_ID)
+
+            if (answer.updatedRole !== roleBefore ) {
+              console.log("they don't match!")
+              connection.query(
+                "UPDATE employee SET roles = ? WHERE id = ?",
+                [answer.updatedRole, employee_ID],
+                function(error) {
+                  if (error) throw err;
+                console.log("Role changed successfully!");
+                  start();
+                }
+              );
+            }
+            else {
+              // bid wasn't high enough, so apologize and start over
+              console.log("Try again...");
+            
+          }
+  
           } else {
             console.log("they don't match")
           }
-        }
-        console.log(results)
+          // return chosenRole
+        // }
+        // console.log(results)
+        console.log(roleBefore)
+        // console.log(employee_ID)
+        // console.log(fullName)
         console.log(answer.updatedRole)
         console.log(answer.choice)
         console.log(answer)
-          if (answer.updatedRole !== answer.choice ) {
-            connection.query(
-              "UPDATE employee SET role = ? WHERE id = ?",
-              [answer.updatedRole, answer.choice.id],
-              function(error) {
-                if (error) throw err;
-                console.log("Role changed successfully!");
-                start();
-              }
-            );
-          }
-          else {
-            // bid wasn't high enough, so apologize and start over
-            console.log("Try again...");
+
+
+        //   if (answer.updatedRole !== chosenRole ) {
+        //     connection.query(
+        //       "UPDATE employee SET role = ? WHERE id = ?",
+        //       [answer.updatedRole, employee_ID],
+        //       function(error) {
+        //         if (error) throw err;
+        //       console.log("Role changed successfully!");
+        //         start();
+        //       }
+        //     );
+        //   }
+        //   else {
+        //     // bid wasn't high enough, so apologize and start over
+        //     console.log("Try again...");
   
 
-            // console.table(results)
+        //     // console.table(results)
           
-        }
+        // }
         start();
+        }
       });
   });
 }
