@@ -324,65 +324,60 @@ function updateEmployee() {
       ])
       .then(function (answer) {
         // get the information of the chosen item
-        // connection.query("SELECT id FROM roles WHERE title = ? ",
-        // answer.updatedRole,
-        //  function (err, results) {
-        //   console.log(answer.updatedRole);
-        //   if (err) throw err;
-        
-        // var chosenRole = [];
-        for (var i = 0; i < results.length; i++) {
+        connection.query("SELECT id FROM roles WHERE title = ? ",
+        answer.updatedRole,
+         function (err, results) {
+          console.log(results);
+          if (err) throw err;
+
+        let roleId = results[0].id;
+        console.log("The role is is", roleId);//1U
+
           // chosenRole.push(results[i].roles);
           // console.log(chosenRole);
           console.log("this is working")
-          roleBefore = results[i].roles
-          console.log(roleBefore);
+          // roleBefore = results.roles
+          // console.log(roleBefore); //2U
 
-          let fullName = results[i].first_name + " " + results[i].last_name; 
-          console.log(fullName)
-          let employee_ID = results[i].id
-          console.log(employee_ID)
+          let fullName = answer.choice
+          console.log(fullName) //3U
+          // let employee_ID = results[i].id
         // }
           // This statement states that if the answer to which employee is chosen is 
           // if (fullName === answer.choice) {
-
-            console.log(fullName)
-            console.log(employee_ID)
+            // console.log(employee_ID)
           //This statement states that if the new role chosen is NOT the same as the employee's original role then proceed to update the roles
-            if (answer.updatedRole !== roleBefore ) {
-              console.log("they don't match!")
+            
               connection.query(
               // This statement says that update the employee table with the new role associated with the employee id
-                "UPDATE employee SET roles = ? WHERE id = ?",
-                [answer.updatedRole, employee_ID],
+                "UPDATE employee SET role_id = ? WHERE CONCAT(first_name, ' ', last_name)=?",
+                [roleId, fullName],
                 function(error) {
                   if (error) throw err;
+                  if (results.affectedRows === 0) {
+                   console.log("Unsuccessful! Could not find a name or role that matches")
+                  } else {
                 console.log("Role changed successfully!");
+                  }
                   start();
                 }
               );
-            }
-            else {
-              // If the new role and old role are the same then the user is told.
-              console.log("The employee already has this role");
-            
-          }
+            })
+      
         
   
-          // } else {
-          //   console.log("they don't match")
-          // }
-          // return chosenRole
-        // }
-        console.log(roleBefore)
-        console.log(answer.updatedRole)
-        console.log(answer.choice)
-        console.log(answer)
+        //   // } else {
+        //   //   console.log("they don't match")
+        //   // }
+        //   // return chosenRole
+        // // }
+        // console.log(roleBefore)
+        // console.log(answer.updatedRole)
+        // console.log(answer.choice)
+        // console.log(answer)
 
-        start();
+        // start();
         }
-        // }
-      // );
+      );
     });
   }
-)}
