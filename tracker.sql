@@ -41,7 +41,7 @@ INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("John"
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Peter", "Rabbit", 2, 2);
 INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("Jane", "Austen", 3, 3);
 
-SELECT employee.id, first_name, last_name, roles.title, role_id AS roles  FROM employee LEFT JOIN roles ON employee.role_id = roles.id;
+SELECT employee.id, first_name, last_name, roles.title AS roles  FROM employee LEFT JOIN roles ON employee.role_id = roles.id;
 
 -- SELECT * FROM employee LEFT JOIN roles ON (employee.role_id = roles.id);
 -- SELECT * FROM employee
@@ -53,3 +53,4 @@ FROM employee e INNER JOIN roles ON e.role_id=roles.id
 INNER JOIN department on roles.department_id=department.id 
 LEFT JOIN employee m ON m.id = e.manager_id; 
 
+SELECT id FROM roles WHERE title = "Manager";

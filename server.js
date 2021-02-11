@@ -324,7 +324,12 @@ function updateEmployee() {
       ])
       .then(function (answer) {
         // get the information of the chosen item
-
+        // connection.query("SELECT id FROM roles WHERE title = ? ",
+        // answer.updatedRole,
+        //  function (err, results) {
+        //   console.log(answer.updatedRole);
+        //   if (err) throw err;
+        
         // var chosenRole = [];
         for (var i = 0; i < results.length; i++) {
           // chosenRole.push(results[i].roles);
@@ -362,6 +367,7 @@ function updateEmployee() {
               console.log("The employee already has this role");
             
           }
+        
   
           // } else {
           //   console.log("they don't match")
@@ -369,14 +375,14 @@ function updateEmployee() {
           // return chosenRole
         // }
         console.log(roleBefore)
-        // console.log(employee_ID)
-        // console.log(fullName)
         console.log(answer.updatedRole)
         console.log(answer.choice)
         console.log(answer)
 
         start();
         }
-      });
-  });
-}
+        // }
+      // );
+    });
+  }
+)}
