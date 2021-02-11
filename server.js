@@ -5,6 +5,7 @@ var inquirer = require("inquirer");
 const cTable = require("console.table");
 var figlet = require('figlet');
 
+//Creating the connection between my js file and the schema I made.
 var connection = mysql.createConnection({
   host: "localhost",
 
@@ -19,6 +20,7 @@ var connection = mysql.createConnection({
   database: "employee_db",
 });
 
+//Actually calling the connection. The viewEmployee function is here to have all the employee information render before the prompts start.
 connection.connect(function (err) {
   if (err) throw err;
   figlet('Employee Tracker', function(err, data) {
@@ -31,7 +33,9 @@ connection.connect(function (err) {
 });
 });
 
+// The first function to begin the user experience. 
 function start() {
+  //The User is prompt with what they would like to do.
   inquirer
     .prompt({
       name: "action",
@@ -39,6 +43,7 @@ function start() {
       message: "What would you like to do?",
       choices: ["Add", "View", "Update", "Exit"],
     })
+    //the answer to their choices is then run through a switch statement where each answer leads to a new function
     .then(function (answer) {
       switch (answer.action) {
         case "Add":
@@ -52,7 +57,7 @@ function start() {
         case "Update":
           update();
           break;
-
+          // in case the user doesn't actually want to continue with the prompts
         case "Exit":
           connection.end();
           break;
