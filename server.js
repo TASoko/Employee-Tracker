@@ -207,6 +207,7 @@ function addEmployee() {
     });
 }
 
+// The view function prompt the user to follow through with viewing the information of 3 choices or ending the app
 function view() {
   inquirer
     .prompt({
@@ -215,6 +216,7 @@ function view() {
       message: "What would you like to view?",
       choices: ["Department", "Roles", "Employees", "Exit"],
     })
+    //each switch statement takes the user to a new function
     .then(function (answer) {
       switch (answer.view) {
         case "Department":
@@ -236,7 +238,9 @@ function view() {
     });
 }
 
+//below is the function for viewing the department table
 function viewDepartment() {
+  // The function is called in sql form and the results are put in console table which displays it for the user
   connection.query("SELECT * FROM department", function (err, results) {
     if (err) throw err;
     console.table(results);
@@ -244,7 +248,10 @@ function viewDepartment() {
   });
 }
 
+//bellow is the funciton for viewing the roles table
 function viewRoles() {
+  // The function is called in sql form and the results are put in console table which displays it for the user
+  // The way the instruction is written uses a join table to join the department table with the roles table to show what department each role is part of
   connection.query("SELECT roles.id, title, salary, department.name AS department  FROM roles LEFT JOIN department ON roles.department_id = department.id", function (err, results) {
     if (err) throw err;
     console.table(results)
@@ -252,7 +259,10 @@ function viewRoles() {
   })
 } 
 
+//below is the function for view the employee table
 function viewEmployee() {
+    // The function is called in sql form and the results are put in console table which displays it for the user
+    // The way the instruction is written it uses multiple joins becuase it has to join information from all the tables to display each piece of information in relation to the employee
   connection.query(`SELECT e.id, CONCAT(e.first_name, " ", e.last_name) 
   AS employee, roles.title, department.name 
   AS department, salary, CONCAT(m.first_name, " ", m.last_name) 
