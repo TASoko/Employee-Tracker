@@ -55,7 +55,7 @@ function start() {
           break;
 
         case "Update":
-          update();
+          updateEmployee();
           break;
           // in case the user doesn't actually want to continue with the prompts
         case "Exit":
@@ -278,42 +278,16 @@ function viewEmployee() {
   });
 }
 
-function update() {
-  inquirer
-    .prompt({
-      name: "update",
-      type: "list",
-      message: "What would you like to update?",
-      choices: ["Department", "Roles", "Employees", "Exit"],
-    })
-    .then(function (answer) {
-      switch (answer.update) {
-        case "Department":
-          updataeDepartment();
-          break;
-
-        case "Roles":
-          updateRoles();
-          break;
-
-        case "Employees":
-          updateEmployee();
-          break;
-
-        case "Exit":
-          connection.end();
-          break;
-      }
-    });
-}
-
+// below is the function used to update an employee which is the only function under update.
 function updateEmployee() {
-  // query the database for all items being auctioned
+    
+// The function is called in sql form and the results are going to be used later
   connection.query("SELECT employee.id, first_name, last_name, roles.title AS roles  FROM employee LEFT JOIN roles ON employee.role_id = roles.id", function (err, results) {
     if (err) throw err;
     console.log("At least it started");
     // once you have the items, prompt the user for which they'd like to update
     inquirer
+    //The first question for this prompt is the user picking the employee. A for loop is ran to make sure the choices are all the employees currently in the system
       .prompt([
         {
           name: "choice",
@@ -321,6 +295,7 @@ function updateEmployee() {
           choices: function () {
             var choiceArray = [];
             for (var i = 0; i < results.length; i++) {
+              //To display the employee's full name a variable was created and then pushed into an array
               let fullName = results[i].first_name + " " + results[i].last_name; 
               console.log(fullName)
               choiceArray.push(fullName);
@@ -330,12 +305,15 @@ function updateEmployee() {
           message: "Which employee would you like to update?",
         },
         {
+        //The second question for this prompt is the user picking the role to change to. A for loop is ran to make sure the choices are all the roles currently in the system
+ 
           name: 'updatedRole',
           type: 'list',
           choices: function () {
             var roleArray = [];
             for (var i = 0; i < results.length; i++) {
               console.log(results[i].roles)
+            //The roles are then pushed into an array to display as choices
               roleArray.push(results[i].roles);
             }
             return roleArray;
@@ -360,15 +338,16 @@ function updateEmployee() {
           let employee_ID = results[i].id
           console.log(employee_ID)
         // }
-
-          if (fullName === answer.choice) {
+          // This statement states that if the answer to which employee is chosen is 
+          // if (fullName === answer.choice) {
 
             console.log(fullName)
             console.log(employee_ID)
-
+          //This statement states that if the new role chosen is NOT the same as the employee's original role then proceed to update the roles
             if (answer.updatedRole !== roleBefore ) {
               console.log("they don't match!")
               connection.query(
+              // This statement says that update the employee table with the new role associated with the employee id
                 "UPDATE employee SET roles = ? WHERE id = ?",
                 [answer.updatedRole, employee_ID],
                 function(error) {
@@ -379,17 +358,16 @@ function updateEmployee() {
               );
             }
             else {
-              // bid wasn't high enough, so apologize and start over
-              console.log("Try again...");
+              // If the new role and old role are the same then the user is told.
+              console.log("The employee already has this role");
             
           }
   
-          } else {
-            console.log("they don't match")
-          }
+          // } else {
+          //   console.log("they don't match")
+          // }
           // return chosenRole
         // }
-        // console.log(results)
         console.log(roleBefore)
         // console.log(employee_ID)
         // console.log(fullName)
@@ -397,26 +375,6 @@ function updateEmployee() {
         console.log(answer.choice)
         console.log(answer)
 
-
-        //   if (answer.updatedRole !== chosenRole ) {
-        //     connection.query(
-        //       "UPDATE employee SET role = ? WHERE id = ?",
-        //       [answer.updatedRole, employee_ID],
-        //       function(error) {
-        //         if (error) throw err;
-        //       console.log("Role changed successfully!");
-        //         start();
-        //       }
-        //     );
-        //   }
-        //   else {
-        //     // bid wasn't high enough, so apologize and start over
-        //     console.log("Try again...");
-  
-
-        //     // console.table(results)
-          
-        // }
         start();
         }
       });
